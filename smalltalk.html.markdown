@@ -5,7 +5,7 @@ contributors:
     - ["Jigyasa Grover", "https://github.com/jig08"]
 ---
 
-- Smalltalk is an object-oriented, dynamically typed, reflective programming language.
+- Smalltalk is a fully object-oriented, dynamically typed, reflective programming language with no 'non-object' types.
 - Smalltalk was created as the language to underpin the "new world" of computing exemplified by "human–computer symbiosis."
 - It was designed and created in part for educational use, more so for constructionist learning, at the Learning Research Group (LRG) of Xerox PARC by Alan Kay, Dan Ingalls, Adele Goldberg, Ted Kaehler, Scott Wallace, and others during the 1970s.
 
@@ -16,7 +16,7 @@ Feedback highly appreciated! Reach me at [@jigyasa_grover](https://twitter.com/j
 - a-z
 - A-Z
 - 0-9
-- .+/\*~<>@%|&?
+- .+-_=/\*~<>()[]'",#@%|&?
 - blank, tab, cr, ff, lf
 
 ##Variables:
