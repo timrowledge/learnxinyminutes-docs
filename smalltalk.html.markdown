@@ -11,6 +11,11 @@ contributors:
 
 Feedback highly appreciated! Reach me at [@jigyasa_grover](https://twitter.com/jigyasa_grover) or send me an e-mail at `grover.jigyasa1@gmail.com`.
 
+## Everything is an object
+Yes, everything. Integers are instances of one of the numeric classes. Classes are instances of the class Metaclass and are just as manipulable as any other object. All classes are part of a single class tree; no disjoint class trees. Stack frames are objects and can be manipulated, which is how the debugger works. There are no pointers into memory locations.
+
+## Functions are not called
+Work is done by sending messages to objects, which decide how to respond to that message. There are no function pointers to be dereferenced. Messages are objects too. As are methods.
 
 ##Allowable characters:
 - a-z
@@ -19,26 +24,26 @@ Feedback highly appreciated! Reach me at [@jigyasa_grover](https://twitter.com/j
 - .+-_=/\*~<>()[]'",#@%|&?
 - blank, tab, cr, ff, lf
 
-##Variables:
-- variables must be declared before use
-- shared vars must begin with uppercase
-- local vars must begin with lowercase
-- reserved names: `nil`, `true`, `false`, `self`, `super`, and `Smalltalk`
+## Variables:
+- variable names must be declared before use but are untyped
+- shared vars (globals, class vars) conventionally begin with uppercase (except the reserved names shown below)
+- local vars (instance vars, temporaries, method & block arguments) conventionally begin with lowercase
+- reserved names: `nil`, `true`, `false`, `self`, `super`, and `thisContext`
 
-##Variable scope:
-- Global: defined in Dictionary Smalltalk and accessible by all objects in system                                 - Special: (reserved) `Smalltalk`, `super`, `self`, `true`, `false`, & `nil`
+## Variable scope:
+- Global: defined in a Dictionary named 'Smalltalk' and accessible by all objects in system
 - Method Temporary: local to a method
 - Block Temporary: local to a block
-- Pool: variables in a Dictionary object
-- Method Parameters: automatic local vars created as a result of message call with params
-- Block Parameters: automatic local vars created as a result of value: message call
-- Class: shared with all instances of one class & its subclasses
-- Class Instance: unique to each instance of a class
-- Instance Variables: unique to each instance
+- Pool: variables in a Dictionary object, possibly shared with classes not directly related by inheritance
+- Method Parameters: automatic method temp vars that name the incoming parameters. Cannot be assigned to 
+- Block Parameters: automatic block temp vars that name the incoming parameters. Cannot be assigned to
+- Class: shared with all instances of a class & its subclasses
+- Class Instance: unique to each instance of a class. Too commonly confused with class variables
+- Instance Variables: unique to each instance of a class
 
-`"Comments are enclosed in quotes"`
+`"Comments are enclosed in quotes and may be arbitrary length"`
 
-`"Period (.) is the statement separator"`
+`"Period (.) is the statement separator. Not required on last line of a method"`
 
 ## Transcript:
 ```
