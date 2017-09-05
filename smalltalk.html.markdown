@@ -3,6 +3,7 @@ language: smalltalk
 filename: smalltalk.st
 contributors:
     - ["Jigyasa Grover", "https://github.com/jig08"]
+    - ["tim Rowledge", "tim@rowledge.org"]
 ---
 
 - Smalltalk is a fully object-oriented, dynamically typed, reflective programming language with no 'non-object' types.
@@ -12,12 +13,39 @@ contributors:
 Feedback highly appreciated! Reach me at [@jigyasa_grover](https://twitter.com/jigyasa_grover) or send me an e-mail at `grover.jigyasa1@gmail.com`.
 
 ## Everything is an object
-Yes, everything. Integers are instances of one of the numeric classes. Classes are instances of the class Metaclass and are just as manipulable as any other object. All classes are part of a single class tree; no disjoint class trees. Stack frames are objects and can be manipulated, which is how the debugger works. There are no pointers into memory locations.
+Yes, everything. Integers are instances of one of the numeric classes. Classes are instances of the class Metaclass and are just as manipulable as any other object. All classes are part of a single class tree; no disjoint class trees. Stack frames are objects and can be manipulated, which is how the debugger works. There are no pointers into memory locations that you can dereference and mess with.
 
-## Functions are not called
-Work is done by sending messages to objects, which decide how to respond to that message. There are no function pointers to be dereferenced. Messages are objects too. As are methods.
+## Functions are not called; messages are sent
+Work is done by sending messages to objects, which decide how to respond to that message and run a method as a result, which eventually returns some object to the original message sending code.
+The system knows the class of the object receiving a message and looks up the message in that class's list of methods. If it is not found, the lookup continues in the super class until either it is found or the root of the classes is reached and there is still no relevant method. 
+If a suitable method is found the code is run, and the same process keeps on going with all the methods sent by that method and so on forever.
+If no suitable method is found an exception is raised, which typically results in a user interface notifier to tell the user that the message was not understood. It is entirely possible to catch the exception and do something to fix the problem, which might range from 'ignore it' to 'load some new packages for this class and try again'.
+A method (more strictly an instance ofthe class CompiledMethod) is a chunk of Smalltalk code that has been compiled into bytecodes. Executing methods start at the beginning and return to the sender when a return is encountered (we use ^ to signify 'return the follwing object') or the end of the code is reached, in which case the current object running the code is returned.
+# An example
+ `result := myObject doSomethingWith: thatObject`
+ We are sending the message 'doSomethingWith:' to myObject. This happens to be a message that has a single argument but that's not important yet.
+ 'myObject' is a 'MyExampleClass' instance so the system looks at the list of messages understood by MyExampleClass
+ - beClever
+ - doWierdThing:
+ - doSomethingWith
+ In searching we see what initially looks like a match - but no, it lacks the final colon. So we find the super class of MyExampleClass - BigExampleClass. Which has a list of known messages of its own
+ - beClever
+ - doSomethingWith:
+ - buildCastleInAir
+ - annoyUserByDoing:
+ We find a proper exact match and start to execute the code
+ ```doSomethingWith: argumentObject
+ "A comment about what this code is meant to do and any known limitations, problems, where it might be further documented etc"
+ 
+ self size > 4 ifTrue: [^argumentObject sizeRelatingTo: self].
+ ```   
+ Everything here except the ^ involves sending more messages. Event the 'ifTrue:' that you might think is a language control structure is just Smalltalk code.
+ We start by sending 'size' to 'self'. 'self' is the object currently running the code - so in this case it is the myObject we started with. 'size' is a very common message that we might anticipate tells us something about how big an object is; you could look it up with the Smalltalk tools very simply. The result we get is then sent the message '>' with the plain old integer 4 (which is an object too; no strange primitive types to pollute the system here) and nobody should be surprised the '>' is a comparison that answers true or false. That boolean (which is actually a Boolean object in Smalltalk) is sent the message 'ifTrue:' with the block of code between the [] as its argument; obvioulsy a true boolean might be expected to run that block of code and a false to ignore it. 
+ If the block is run then we do some more message sending to the argument object and noting the '^' we return the answer back to our starting point and it gets assigned to 'result'. If the block is ignored we seem to run out of code and so 'self' is returned and assigned to 'result'.
 
-##Allowable characters:
+### Smalltalk quick reference cheat-sheet
+Taken from [Smalltalk Cheatsheet](http://www.angelfire.com/tx4/cus/notes/smalltalk.html)
+## Allowable characters:
 - a-z
 - A-Z
 - 0-9
